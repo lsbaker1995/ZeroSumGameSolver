@@ -50,16 +50,38 @@ namespace ConsoleApp2
 
             while(true)
             {
-                var matrixAlteredFlag = RemoveRows(matrix, n, m);
-                if (matrixAlteredFlag != true)
+                var rowAlteredFlag = RemoveRows(matrix);
+                if (rowAlteredFlag == 1)
+                {
+                    matrix.RemoveAt(1);
+                }
+                else if (rowAlteredFlag == 2)
+                {
+                    matrix.RemoveAt(0);
+                }
+                else if(rowAlteredFlag == 3)
+                {
                     break;
-                matrixAlteredFlag = RemoveColumn(matrix, n, m);
-                if (matrixAlteredFlag != true)
+                }
+                var columnAlteredFlag = RemoveColumn(matrix);
+                if (columnAlteredFlag == 1)
+                {
+                    foreach (var row in matrix)
+                        row.RemoveAt(1);
+                }
+                else if (columnAlteredFlag == 2)
+                {
+                    foreach (var row in matrix)
+                        row.RemoveAt(0);
+                }
+                else if(columnAlteredFlag == 3)
+                {
                     break;
+                }
             }
 
             foreach (var row in matrix)
-                for (var i = 0; i < n; i++)
+                for (var i = 0; i < matrix.Count; i++)
                 {
                     if (i == n - 1)
                         Console.WriteLine(row.ElementAt(i));
@@ -74,46 +96,81 @@ namespace ConsoleApp2
 
         }
 
-        private static bool RemoveRows(List<List<int>> matrix, int rows, int columns)
+        private static int RemoveRows(List<List<int>> matrix)
         {
-            var rowElementAreDominant = new List<string>();
-            for (int i = 0; i < columns; i++)
+            var columns = matrix.ElementAt(0).Count();
+            var rowElementsAreDominant = new List<string>();
+            if (matrix.Count() == 1)
+            {
+                return 3;
+            }
+            for (int i = 0; i <= columns - 1; i++)
             {
                 if (matrix.ElementAt(0).ElementAt(i) >= matrix.ElementAt(1).ElementAt(i))
                 {
-                    rowElementAreDominant.Add("Yes");
+                    rowElementsAreDominant.Add("Yes");
                 }
                 else if(matrix.ElementAt(0).ElementAt(i) <= matrix.ElementAt(1).ElementAt(i))
                 {
-                    rowElementAreDominant.Add("No");
+                    rowElementsAreDominant.Add("No");
                 }
             }
 
-            var dominantColumnsNumber = rowElementAreDominant.Where(r => r.Equals("Yes"));
-            var nonDominateColumnsNumber = rowElementAreDominant.Where(r => r.Equals("No"));
+            var dominantColumnsNumber = rowElementsAreDominant.Where(r => r.Equals("Yes"));
+            var nonDominantColumnsNumber = rowElementsAreDominant.Where(r => r.Equals("No"));
 
             if (dominantColumnsNumber.Count() == columns)
             {
-                matrix.RemoveAt(1);
-                return true;
+                return 1;
             }
-            else if (nonDominateColumnsNumber.Count() == columns)
+            else if (nonDominantColumnsNumber.Count() == columns)
             {
-                matrix.RemoveAt(0);
-                return true;
+                return 2;
             }
             else
             {
-                return false;
+                return 3;
             }
 
         }
 
-        private static bool RemoveColumn(List<List<int>>matrix , int rows, int columns)
+        private static int RemoveColumn(List<List<int>>matrix)
         {
             // insert more good code here
             //This is where you implement logic for removing a column
-            return true;
+            var rows = matrix.Count();
+            var columnElementsAreDominant = new List<string>();
+            if (matrix.ElementAt(0).Count() == 1)
+            {
+                return 3;
+            }
+            for (int i = 0; i <= rows - 1; i++)
+            {
+                if (matrix.ElementAt(i).ElementAt(0) >= matrix.ElementAt(i).ElementAt(1))
+                {
+                    columnElementsAreDominant.Add("Yes");
+                }
+                else if(matrix.ElementAt(i).ElementAt(0) <= matrix.ElementAt(i).ElementAt(1))
+                {
+                    columnElementsAreDominant.Add("No");
+                }
+            }
+
+            var dominantRowItemsNumber = columnElementsAreDominant.Where(r => r.Equals("Yes"));
+            var nonDominantRowItemsNumber = columnElementsAreDominant.Where(r => r.Equals("No"));
+            
+            if (dominantRowItemsNumber.Count() == rows)
+            {
+                return 1;
+            }
+            else if (nonDominantRowItemsNumber.Count() == rows)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
         }
 
     }
