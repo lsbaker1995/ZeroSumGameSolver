@@ -38,23 +38,48 @@ namespace ConsoleApp2
                 matrix.Add(newColumn);
             }
 
-            if((matrix.ElementAt(0).ElementAt(0) > matrix.ElementAt(1).ElementAt(0)) && (matrix.ElementAt(0).ElementAt(1) > matrix.ElementAt(1).ElementAt(0)))
+           foreach(var row in matrix)
+                for(int i = 0; i < n; i++)
+                {
+                    if(i == n - 1)
+                        Console.WriteLine(row.ElementAt(i));
+                    else
+                        Console.Write(row.ElementAt(i));
+                }
+
+           bool matrixAlteredFlag = true;
+           while(matrixAlteredFlag == true)
             {
-                matrix.RemoveAt(1);
-            } else
-            {
-                matrix.RemoveAt(0);
+                RemoveRows(matrix, n, m);
+                RemoveColumn(matrix, n, m);
             }
 
-            var result = matrix.ElementAt(0).Min();
-
-            Console.WriteLine(result);
+            foreach (var row in matrix)
+                for (int i = 0; i < n; i++)
+                {
+                    if (i == n - 1)
+                        Console.WriteLine(row.ElementAt(i));
+                    else
+                        Console.Write(row.ElementAt(i));
+                }
 
         }
 
         static void ReduceMatrix()
         {
 
+        }
+
+        private static void RemoveRows(List<List<int>> matrix, int rows, int columns)
+        {
+            //insert good code here
+            //This is where you put the logic to remove a row
+        }
+
+        private static void RemoveColumn(List<List<int>>matrix , int rows, int columns)
+        {
+            // insert more good code here
+            //This is where you implement logic for removing a column
         }
 
     }
