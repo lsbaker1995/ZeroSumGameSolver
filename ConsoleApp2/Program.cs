@@ -67,12 +67,12 @@ namespace ConsoleApp2
                 if (columnAlteredFlag == 1)
                 {
                     foreach (var row in matrix)
-                        row.RemoveAt(1);
+                        row.RemoveAt(0);
                 }
                 else if (columnAlteredFlag == 2)
                 {
                     foreach (var row in matrix)
-                        row.RemoveAt(0);
+                        row.RemoveAt(1);
                 }
                 else if(columnAlteredFlag == 3)
                 {
@@ -106,24 +106,30 @@ namespace ConsoleApp2
             }
             for (int i = 0; i <= columns - 1; i++)
             {
-                if (matrix.ElementAt(0).ElementAt(i) >= matrix.ElementAt(1).ElementAt(i))
+                if (matrix.ElementAt(0).ElementAt(i) > matrix.ElementAt(1).ElementAt(i))
                 {
                     rowElementsAreDominant.Add("Yes");
                 }
-                else if(matrix.ElementAt(0).ElementAt(i) <= matrix.ElementAt(1).ElementAt(i))
+                else if(matrix.ElementAt(0).ElementAt(i) < matrix.ElementAt(1).ElementAt(i))
                 {
                     rowElementsAreDominant.Add("No");
+                }
+                else if (matrix.ElementAt(0).ElementAt(i) == matrix.ElementAt(1).ElementAt(i))
+                {
+                    rowElementsAreDominant.Add("Equal");
                 }
             }
 
             var dominantColumnsNumber = rowElementsAreDominant.Where(r => r.Equals("Yes"));
             var nonDominantColumnsNumber = rowElementsAreDominant.Where(r => r.Equals("No"));
+            var equalColumns = rowElementsAreDominant.Where(r => r.Equals("Equal"));
+            var numberOfEqualColumns = equalColumns.Count();
 
-            if (dominantColumnsNumber.Count() == columns)
+            if (dominantColumnsNumber.Count() + numberOfEqualColumns == columns)
             {
                 return 1;
             }
-            else if (nonDominantColumnsNumber.Count() == columns)
+            else if (nonDominantColumnsNumber.Count() + numberOfEqualColumns == columns)
             {
                 return 2;
             }
@@ -154,16 +160,22 @@ namespace ConsoleApp2
                 {
                     columnElementsAreDominant.Add("No");
                 }
+                else if (matrix.ElementAt(0).ElementAt(i) == matrix.ElementAt(1).ElementAt(i))
+                {
+                    columnElementsAreDominant.Add("Equal");
+                }
             }
 
             var dominantRowItemsNumber = columnElementsAreDominant.Where(r => r.Equals("Yes"));
             var nonDominantRowItemsNumber = columnElementsAreDominant.Where(r => r.Equals("No"));
+            var equalRows = columnElementsAreDominant.Where(r => r.Equals("Equal"));
+            var numberOfEqualRows = equalRows.Count();
             
-            if (dominantRowItemsNumber.Count() == rows)
+            if (dominantRowItemsNumber.Count() + numberOfEqualRows == rows)
             {
                 return 1;
             }
-            else if (nonDominantRowItemsNumber.Count() == rows)
+            else if (nonDominantRowItemsNumber.Count() + numberOfEqualRows == rows)
             {
                 return 2;
             }
