@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,21 +17,19 @@ namespace ConsoleApp2
 
         static void EnterMatrix()
         {
-            int n, m;
-
             Console.Write("Enter the dimension of the row: ");
-            m = Convert.ToInt32(Console.ReadLine());
+            var m = Convert.ToInt32(Console.ReadLine());
             Console.Write("Enter the dimension of the column: ");
-            n = Convert.ToInt32(Console.ReadLine());
+            var n = Convert.ToInt32(Console.ReadLine());
 
 
             var matrix = new List<List<int>>();
 
-            for (int i = 0; i < m; i++)
+            for (var i = 0; i < m; i++)
             {
                 var newColumn = new List<int>();
 
-                for (int j = 0; j < n; j++)
+                for (var j = 0; j < n; j++)
                 {
                     newColumn.Add(Convert.ToInt32(Console.ReadLine()));
                 }
@@ -38,24 +37,29 @@ namespace ConsoleApp2
                 matrix.Add(newColumn);
             }
 
-           foreach(var row in matrix)
-                for(int i = 0; i < n; i++)
+            foreach(var row in matrix)
+                for(var i = 0; i < n; i++)
                 {
                     if(i == n - 1)
                         Console.WriteLine(row.ElementAt(i));
                     else
                         Console.Write(row.ElementAt(i));
                 }
+            
 
-           bool matrixAlteredFlag = true;
-           while(matrixAlteredFlag == true)
+
+            while(true)
             {
-                RemoveRows(matrix, n, m);
-                RemoveColumn(matrix, n, m);
+                var matrixAlteredFlag = RemoveRows(matrix, n, m);
+                if (matrixAlteredFlag != true)
+                    break;
+                matrixAlteredFlag = RemoveColumn(matrix, n, m);
+                if (matrixAlteredFlag != true)
+                    break;
             }
 
             foreach (var row in matrix)
-                for (int i = 0; i < n; i++)
+                for (var i = 0; i < n; i++)
                 {
                     if (i == n - 1)
                         Console.WriteLine(row.ElementAt(i));
@@ -70,16 +74,46 @@ namespace ConsoleApp2
 
         }
 
-        private static void RemoveRows(List<List<int>> matrix, int rows, int columns)
+        private static bool RemoveRows(List<List<int>> matrix, int rows, int columns)
         {
-            //insert good code here
-            //This is where you put the logic to remove a row
+            var rowElementAreDominant = new List<string>();
+            for (int i = 0; i < columns; i++)
+            {
+                if (matrix.ElementAt(0).ElementAt(i) >= matrix.ElementAt(1).ElementAt(i))
+                {
+                    rowElementAreDominant.Add("Yes");
+                }
+                else if(matrix.ElementAt(0).ElementAt(i) <= matrix.ElementAt(1).ElementAt(i))
+                {
+                    rowElementAreDominant.Add("No");
+                }
+            }
+
+            var dominantColumnsNumber = rowElementAreDominant.Where(r => r.Equals("Yes"));
+            var nonDominateColumnsNumber = rowElementAreDominant.Where(r => r.Equals("No"));
+
+            if (dominantColumnsNumber.Count() == columns)
+            {
+                matrix.RemoveAt(1);
+                return true;
+            }
+            else if (nonDominateColumnsNumber.Count() == columns)
+            {
+                matrix.RemoveAt(0);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
-        private static void RemoveColumn(List<List<int>>matrix , int rows, int columns)
+        private static bool RemoveColumn(List<List<int>>matrix , int rows, int columns)
         {
             // insert more good code here
             //This is where you implement logic for removing a column
+            return true;
         }
 
     }
